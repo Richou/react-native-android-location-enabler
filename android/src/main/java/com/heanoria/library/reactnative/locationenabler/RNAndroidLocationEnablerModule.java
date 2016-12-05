@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package com.heanoria.library.reactnative.locationenabler;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
