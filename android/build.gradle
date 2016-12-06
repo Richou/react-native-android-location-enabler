@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.+'
+    }
+}
+
 apply plugin: 'com.android.library'
 
 android {
@@ -21,5 +32,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.facebook.react:react-native:+'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
 }
   
