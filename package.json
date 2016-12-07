@@ -2,16 +2,23 @@
 {
   "name": "react-native-android-location-enabler",
   "version": "1.0.0",
-  "description": "",
+  "description": "Display a GoogleMap like android popup to ask for user to enable location services if disabled ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native", "location", "location-services", "android-location-services", "enable", "android", "popup"
   ],
   "author": "Richou",
-  "license": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Richou/react-native-android-location-enabler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Richou/react-native-android-location-enabler/issues"
+  },
   "peerDependencies": {
     "react-native": "^0.29.0"
   }
