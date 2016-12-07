@@ -30,9 +30,17 @@ import static android.app.Activity.RESULT_OK;
 
 public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult>, ActivityEventListener {
 
+    private static final String SELF_MODULE_NAME = "RNAndroidLocationEnabler";
     private static final String LOCATION_INTERVAL_DURATION_PARAMS_KEY = "interval";
+    private static final String LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY = "fastInterval";
     private static final String TAG = RNAndroidLocationEnablerModule.class.getName();
     private static final int REQUEST_CHECK_SETTINGS = 100;
+    private static final int DEFAULT_INTERVAL_DURATION = 10000;
+    private static final int DEFAULT_FAST_INTERVAL_DURATION = DEFAULT_INTERVAL_DURATION / 2 ;
+
+    private static final String ERR_USER_DENIED_CODE = "ERR00";
+    private static final String ERR_SETTINGS_CHANGE_UNAVAILABLE_CODE = "ERR01";
+    private static final String ERR_FAILED_OPEN_DIALOG_CODE = "ERR02";
 
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
@@ -58,13 +66,13 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
 
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY));
-        locationRequest.setFastestInterval(params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY) / 2);
+        locationRequest.setInterval(params.hasKey(LOCATION_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_INTERVAL_DURATION);
+        locationRequest.setFastestInterval(params.hasKey(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_FAST_INTERVAL_DURATION);
     }
 
     @Override
     public String getName() {
-        return "RNAndroidLocationEnabler";
+        return SELF_MODULE_NAME;
     }
 
     @Override
@@ -91,17 +99,18 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         final Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
-                if (promise != null) promise.resolve("enabled");
+                if (promise != null) promise.resolve("already-enabled");
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 try {
                     status.startResolutionForResult(getCurrentActivity(), REQUEST_CHECK_SETTINGS);
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(TAG, "Failed to show dialog", e);
+                } catch (IntentSender.SendIntentException exception) {
+                    Log.e(TAG, "Failed to show dialog", exception);
+                    if (promise != null) promise.reject(ERR_FAILED_OPEN_DIALOG_CODE, new RNAndroidLocationEnablerException("Failed to show dialog", exception));
                 }
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                // Location settings are unavailable so not possible to show any dialog now
+                if (promise != null) promise.reject(ERR_SETTINGS_CHANGE_UNAVAILABLE_CODE, new RNAndroidLocationEnablerException("Settings change unavailable"));
                 break;
         }
     }
@@ -113,7 +122,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
             if (resultCode == RESULT_OK ) {
                 promise.resolve("enabled");
             } else {
-                promise.reject(new RNAndroidLocationEnablerException("User did not enabled location"));
+                promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
             }
 
         }
