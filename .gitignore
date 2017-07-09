@@ -1,2 +1,7 @@
 build
 *.iml
+android/.gradle
+android/.idea
+android/local.properties
+yarn.lock
+node_modules
