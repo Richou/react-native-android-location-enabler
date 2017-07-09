@@ -1,7 +1,5 @@
-
 package com.heanoria.library.reactnative.locationenabler;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -28,6 +26,13 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * RNAndroidLocationEnablerModule class offers a single feature: prompts a popup like Google Maps to the user.
+ * User can enable GPS localisation directly in the App, this is a good choice for user experience because one stays in the App.
+ *
+ * @author Richou
+ * @since 2016-12
+ */
 public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult>, ActivityEventListener {
 
     private static final String SELF_MODULE_NAME = "RNAndroidLocationEnabler";
@@ -115,21 +120,14 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         }
     }
 
-
     @Override
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CHECK_SETTINGS && promise != null) {
             if (resultCode == RESULT_OK ) {
                 promise.resolve("enabled");
             } else {
                 promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
             }
-
         }
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-
     }
 }

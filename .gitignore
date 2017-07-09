@@ -1,2 +1,4 @@
 build
 *.iml
+android/.gradle
+android/.idea
