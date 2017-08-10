@@ -1,5 +1,6 @@
 package com.heanoria.library.reactnative.locationenabler;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -121,7 +122,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHECK_SETTINGS && promise != null) {
             if (resultCode == RESULT_OK ) {
                 promise.resolve("enabled");
@@ -129,5 +130,10 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
                 promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
             }
         }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+
     }
 }
