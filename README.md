@@ -3,7 +3,7 @@
 
 Allow to display a GoogleMap like android popup to ask for user to enable location services if disabled
 
-![In action](assets/android-enabler.gif "See component in action !")
+<img src="assets/android-enabler.gif" width="540" alt="See in action" title="See component in action !" >
 
 ## Getting started
 
