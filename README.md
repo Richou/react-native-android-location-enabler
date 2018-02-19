@@ -1,6 +1,10 @@
 
 # react-native-android-location-enabler
 
+Allow to display a GoogleMap like android popup to ask for user to enable location services if disabled
+
+![In action](assets/android-enabler.gif "See component in action !")
+
 ## Getting started
 
 `$ npm install react-native-android-location-enabler --save`
