@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.facebook.react:react-native:+'
-    compile 'com.google.android.gms:play-services-location:15.0.1'
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api 'com.facebook.react:react-native:+'
+    api 'com.google.android.gms:play-services-location:15.0.1'
 }
