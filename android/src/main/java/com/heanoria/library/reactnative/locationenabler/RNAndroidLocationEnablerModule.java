@@ -106,6 +106,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 if (promise != null) promise.resolve("already-enabled");
+                this.promise = null;
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 try {
@@ -113,10 +114,12 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
                 } catch (IntentSender.SendIntentException exception) {
                     Log.e(TAG, "Failed to show dialog", exception);
                     if (promise != null) promise.reject(ERR_FAILED_OPEN_DIALOG_CODE, new RNAndroidLocationEnablerException("Failed to show dialog", exception));
+                    this.promise = null;
                 }
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 if (promise != null) promise.reject(ERR_SETTINGS_CHANGE_UNAVAILABLE_CODE, new RNAndroidLocationEnablerException("Settings change unavailable"));
+                this.promise = null;
                 break;
         }
     }
@@ -129,6 +132,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
             } else {
                 promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
             }
+            this.promise = null;
         }
     }
 
