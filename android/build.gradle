@@ -12,13 +12,19 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
-android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+def DEFAULT_COMPILE_SDK_VERSION   = 27
+def DEFAULT_BUILD_TOOLS_VERSION   = "27.0.3"
+def DEFAULT_TARGET_SDK_VERSION    = 27
+def DEFAULT_MIN_SDK_VERSION       = 16
+def DEFAULT_GOOGLE_PLAY_SERVICES_VERSION    = "15.0.1"
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+android {
+        compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
+        buildToolsVersion rootProject.hasProperty('buildToolsVersion') ? rootProject.buildToolsVersion : DEFAULT_BUILD_TOOLS_VERSION
+
+  defaultConfig {
+        minSdkVersion rootProject.hasProperty('minSdkVersion') ? rootProject.minSdkVersion : DEFAULT_MIN_SDK_VERSION
+        targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
         versionCode 3
         versionName "1.2"
         ndk {
@@ -30,8 +36,10 @@ android {
     }
 }
 
+def googlePlayServicesVersion = rootProject.hasProperty('googlePlayServicesVersion')  ? rootProject.googlePlayServicesVersion : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.facebook.react:react-native:+'
-    api 'com.google.android.gms:play-services-location:15.0.1'
+    api "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
 }
+
