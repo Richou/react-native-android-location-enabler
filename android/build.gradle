@@ -1,3 +1,7 @@
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -13,12 +17,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+        compileSdkVersion safeExtGet('compileSdkVersion', 27)
+        buildToolsVersion safeExtGet('buildToolsVersion', '27.0.3')
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+  defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', 16)
+        targetSdkVersion safeExtGet('targetSdkVersion', 27)
         versionCode 3
         versionName "1.2"
         ndk {
@@ -30,8 +34,10 @@ android {
     }
 }
 
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.facebook.react:react-native:+'
-    api 'com.google.android.gms:play-services-location:15.0.1'
+    api "com.google.android.gms:play-services-location:${safeExtGet('googlePlayServicesVersion', '15.0.1')}"
 }
+
