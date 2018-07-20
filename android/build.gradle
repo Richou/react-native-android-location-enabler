@@ -38,6 +38,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.facebook.react:react-native:+'
-    api "com.google.android.gms:play-services-location:${safeExtGet('googlePlayServicesVersion', '27.0.2')}"
+    api "com.google.android.gms:play-services-location:${safeExtGet('googlePlayServicesVersion', '15.0.1')}"
 }
 
