@@ -1,4 +1,4 @@
-package com.enablelocation;
+package com.simpleenable;
 
 import android.app.Application;
 
