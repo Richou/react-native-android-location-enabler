@@ -15,15 +15,20 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -86,8 +91,52 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
-        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-        result.setResultCallback(this);
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getCurrentActivity()).checkLocationSettings(builder.build());
+        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                try {
+                    LocationSettingsResponse response = task.getResult(ApiException.class);
+                    // All location settings are satisfied. The client can initialize location
+                    // requests here.
+                    if (promise != null)
+                        promise.resolve("enabled");
+                    promise = null;
+                } catch (ApiException exception) {
+                    switch (exception.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            // Location settings are not satisfied. But could be fixed by showing the
+                            // user a dialog.
+                            try {
+                                // Cast to a resolvable exception.
+                                ResolvableApiException resolvable = (ResolvableApiException) exception;
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                resolvable.startResolutionForResult(
+                                        getCurrentActivity(),
+                                        REQUEST_CHECK_SETTINGS);
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                                Log.e(TAG, "Failed to show dialog", e);
+                                if (promise != null)
+                                    promise.reject(ERR_FAILED_OPEN_DIALOG_CODE, new RNAndroidLocationEnablerException("Failed to show dialog", e));
+                                promise = null;
+                            } catch (ClassCastException e) {
+                                // Ignore, should be an impossible error.
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            // Location settings are not satisfied. However, we have no way to fix the
+                            // settings so we won't show the dialog.
+                            if (promise != null)
+                                promise.reject(ERR_SETTINGS_CHANGE_UNAVAILABLE_CODE, new RNAndroidLocationEnablerException("Settings change unavailable"));
+                            promise = null;
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     @Override
