@@ -91,6 +91,9 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
+        if (getCurrentActivity() == null) {
+            return;
+        }
         Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getCurrentActivity()).checkLocationSettings(builder.build());
         result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
 
