@@ -19,8 +19,7 @@ declare module 'react-native-android-location-enabler' {
     message: string;
   }
 
-  export default interface RNAndroidLocationEnabler {
-
+  export interface IRNAndroidLocationEnabler {
     /**
      *Allow to display a GoogleMap like android popup to ask for user to enable location services if disabled
      *
@@ -30,4 +29,7 @@ declare module 'react-native-android-location-enabler' {
      */
     promptForEnableLocationIfNeeded: (param: ReadableMap) => Promise<sucess>;
   }
+  const RNAndroidLocationEnabler: IRNAndroidLocationEnabler;
+  export default RNAndroidLocationEnabler;
+  
 }
