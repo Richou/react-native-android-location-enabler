@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "16.6.3",
-    "react-native": "0.58.4",
+    "react-native": "^0.59.9",
     "react-native-android-location-enabler": "^1.0.8"
   },
   "devDependencies": {
