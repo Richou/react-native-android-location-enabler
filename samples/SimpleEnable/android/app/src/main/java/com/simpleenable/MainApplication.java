@@ -7,10 +7,11 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -24,7 +25,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-	  new RNAndroidLocationEnablerPackage()
+          new RNAndroidLocationEnablerPackage()
       );
     }
 

@@ -1,4 +1,5 @@
 rootProject.name = 'SimpleEnable'
 
-include ':app', ':react-native-android-location-enabler'
+include ':app'
+include ':react-native-android-location-enabler'
 project(':react-native-android-location-enabler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-location-enabler/android')

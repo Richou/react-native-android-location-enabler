@@ -41,7 +41,7 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-	    <TouchableOpacity onPress={this.onLocationPressed}><Text>Click me !</Text></TouchableOpacity>
+      <TouchableOpacity onPress={this.onLocationPressed}><Text>Click me !</Text></TouchableOpacity>
       </View>
     );
   }
