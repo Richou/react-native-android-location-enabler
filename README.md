@@ -7,15 +7,25 @@ Allow to display a GoogleMap like android popup to ask for user to enable locati
 
 ## Getting started
 
+**ReactNative >= 0.60.0**
+
+### Installation
+
 `$ npm install react-native-android-location-enabler --save`
 
-### Mostly automatic installation
+Since ReactNative 0.60.0 and ReactNative Cli 2.0.0, no action is needed to add a native module.
+
+**ReactNative < 0.60.0**
+
+### Installation
+
+`$ npm install react-native-android-location-enabler@1.1.0 --save`
+
+#### Configuration
 
 `$ react-native link react-native-android-location-enabler`
 
-### Manual installation
-
-#### Android
+#### Manual Configuration
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
   - Add `import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;` to the imports at the top of the file
