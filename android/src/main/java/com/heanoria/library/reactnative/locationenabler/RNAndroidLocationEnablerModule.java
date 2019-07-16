@@ -3,8 +3,9 @@ package com.heanoria.library.reactnative.locationenabler;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Promise;
@@ -37,7 +38,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
     private static final String LOCATION_INTERVAL_DURATION_PARAMS_KEY = "interval";
     private static final String LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY = "fastInterval";
     private static final String TAG = RNAndroidLocationEnablerModule.class.getName();
-    private static final int REQUEST_CHECK_SETTINGS = 100;
+    private static final int REQUEST_CHECK_SETTINGS = 42;
     private static final int DEFAULT_INTERVAL_DURATION = 10000;
     private static final int DEFAULT_FAST_INTERVAL_DURATION = DEFAULT_INTERVAL_DURATION / 2 ;
 

@@ -1,6 +1,6 @@
 {
   "name": "react-native-android-location-enabler",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Display a GoogleMap like android popup to ask for user to enable location services if disabled ",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
     "url": "https://github.com/Richou/react-native-android-location-enabler/issues"
   },
   "peerDependencies": {
-    "react-native": ">= 0.47.1"
+    "react-native": ">= 0.60.0"
   }
 }
