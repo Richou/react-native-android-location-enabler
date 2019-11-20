@@ -83,6 +83,14 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
             if (resultCode == RESULT_OK ) {
                 promise.resolve("enabled");
             } else {
+                // Case for Android 10 bug: user pressed 'ok' but we receive RESULT_CANCELLED
+                // https://issuetracker.google.com/issues/140447198
+                if (getCurrentActivity() != null) {
+                    LocationManager locationManager = (LocationManager) getCurrentActivity().getSystemService(Context.LOCATION_SERVICE);
+                    if (locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        promise.resolve("enabled");
+                    }
+                }
                 promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
             }
             this.promise = null;
