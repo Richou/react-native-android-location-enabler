@@ -1,8 +1,10 @@
 package com.heanoria.library.reactnative.locationenabler;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -77,10 +79,20 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         return SELF_MODULE_NAME;
     }
 
+    private boolean isLocationProviderEnabled() {
+        if (getCurrentActivity() != null) {
+            LocationManager locationManager = (LocationManager) getCurrentActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHECK_SETTINGS && promise != null) {
-            if (resultCode == RESULT_OK ) {
+            if (resultCode == RESULT_OK || isLocationProviderEnabled()) {
                 promise.resolve("enabled");
             } else {
                 promise.reject(ERR_USER_DENIED_CODE, new RNAndroidLocationEnablerException("denied"));
