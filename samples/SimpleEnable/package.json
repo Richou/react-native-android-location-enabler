@@ -8,14 +8,14 @@
   },
   "dependencies": {
     "react": "16.8.3",
-    "react-native": "0.59.9",
+    "react-native": "^0.61.5",
     "react-native-android-location-enabler": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
     "@babel/runtime": "7.4.5",
     "babel-jest": "24.8.0",
-    "jest": "24.8.0",
+    "jest": "^25.1.0",
     "metro-react-native-babel-preset": "0.54.1",
     "react-test-renderer": "16.8.3"
   },
