@@ -36,6 +36,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule implements ActivityEventListener, OnCompleteListener<LocationSettingsResponse> {
 
+    private final ReactApplicationContext context;
     private static final String SELF_MODULE_NAME = "RNAndroidLocationEnabler";
     private static final String LOCATION_INTERVAL_DURATION_PARAMS_KEY = "interval";
     private static final String LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY = "fastInterval";
@@ -54,12 +55,13 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
 
     public RNAndroidLocationEnablerModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        this.context = reactContext;
         reactContext.addActivityEventListener(this);
     }
 
     @ReactMethod
     public void promptForEnableLocationIfNeeded(ReadableMap params, Promise promise) {
-        if (getCurrentActivity() == null || params == null || promise == null) return;
+        if (getCurrentActivity() == null || params == null || promise == null || this.context == null) return;
 
         this.promise = promise;
 
@@ -70,7 +72,7 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
-        Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(getCurrentActivity()).checkLocationSettings(builder.build());
+        Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(this.context).checkLocationSettings(builder.build());
         task.addOnCompleteListener(this);
     }
 
