@@ -38,7 +38,7 @@ Since ReactNative 0.60.0 and ReactNative Cli 2.0.0, no action is needed to add a
    ```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
    ```
-     compile project(':react-native-android-location-enabler')
+     implementation project(':react-native-android-location-enabler')
    ```
 
 ## Usage
