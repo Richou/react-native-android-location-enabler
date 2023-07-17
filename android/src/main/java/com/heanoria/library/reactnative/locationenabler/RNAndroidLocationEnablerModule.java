@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.LocationManager;
 import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 
@@ -58,21 +60,27 @@ public class RNAndroidLocationEnablerModule extends ReactContextBaseJavaModule i
     }
 
     @ReactMethod
-    public void promptForEnableLocationIfNeeded(ReadableMap params, Promise promise) {
+    public void promptForEnableLocationIfNeeded(final ReadableMap params, Promise promise) {
         if (getCurrentActivity() == null || params == null || promise == null) return;
 
         this.promise = promise;
 
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(params.hasKey(LOCATION_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_INTERVAL_DURATION);
-        locationRequest.setFastestInterval(params.hasKey(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_FAST_INTERVAL_DURATION);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
-        builder.setAlwaysShow(true);
-        Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(getCurrentActivity()).checkLocationSettings(builder.build());
-        task.addOnCompleteListener(this);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                LocationRequest locationRequest = LocationRequest.create();
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                locationRequest.setInterval(params.hasKey(LOCATION_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_INTERVAL_DURATION);
+                locationRequest.setFastestInterval(params.hasKey(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) ? params.getInt(LOCATION_FAST_INTERVAL_DURATION_PARAMS_KEY) : DEFAULT_FAST_INTERVAL_DURATION);
+                LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                        .addLocationRequest(locationRequest);
+                builder.setAlwaysShow(true);
+                Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(getCurrentActivity()).checkLocationSettings(builder.build());
+                task.addOnCompleteListener(RNAndroidLocationEnablerModule.this);
+            }
+        });
     }
+
 
     @Override
     public String getName() {
