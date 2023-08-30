@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      {result && <Text>Result: {result}</Text>}
       <Button title="Enable GPS" onPress={handleEnabledPressed} />
     </View>
   );
