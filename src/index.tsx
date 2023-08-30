@@ -17,13 +17,15 @@ const AndroidLocationEnabler = NativeModules.AndroidLocationEnabler
       }
     );
 
-export type AndroidLocationEnablerResult = 'enabled' | 'already-enabled'
+export type AndroidLocationEnablerResult = 'enabled' | 'already-enabled';
 
 export type AndroidLocationEnablerOptions = {
-  interval: number
-  waitForAccurate?: boolean
-}
+  interval: number;
+  waitForAccurate?: boolean;
+};
 
-export function promptForEnableLocationIfNeeded(options?: AndroidLocationEnablerOptions): Promise<AndroidLocationEnablerResult> {
-  return AndroidLocationEnabler.promptForEnableLocationIfNeeded(options)
+export function promptForEnableLocationIfNeeded(
+  options?: AndroidLocationEnablerOptions
+): Promise<AndroidLocationEnablerResult> {
+  return AndroidLocationEnabler.promptForEnableLocationIfNeeded(options);
 }
