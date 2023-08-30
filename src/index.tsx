@@ -17,6 +17,13 @@ const AndroidLocationEnabler = NativeModules.AndroidLocationEnabler
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return AndroidLocationEnabler.multiply(a, b);
+export type AndroidLocationEnablerResult = 'enabled' | 'already-enabled'
+
+export type AndroidLocationEnablerOptions = {
+  interval: number
+  waitForAccurate?: boolean
+}
+
+export function promptForEnableLocationIfNeeded(options?: AndroidLocationEnablerOptions): Promise<AndroidLocationEnablerResult> {
+  return AndroidLocationEnabler.promptForEnableLocationIfNeeded(options)
 }

@@ -1,18 +1,27 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-android-location-enabler';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import { promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<string | undefined>();
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  async function handleEnabledPressed() {
+    try {
+      const result = await promptForEnableLocationIfNeeded()
+      console.log('result', result)
+      setResult(result)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setResult(error.message)
+      }
+    }
+  }
 
   return (
     <View style={styles.container}>
       <Text>Result: {result}</Text>
+      <Button title="Enable GPS" onPress={handleEnabledPressed}/>
     </View>
   );
 }

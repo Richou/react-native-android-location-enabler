@@ -1,4 +1,4 @@
-package com.androidlocationenabler
+package com.heanoria.library.reactnative.locationenabler
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
