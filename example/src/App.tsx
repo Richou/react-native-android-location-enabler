@@ -8,12 +8,12 @@ export default function App() {
 
   async function handleEnabledPressed() {
     try {
-      const result = await promptForEnableLocationIfNeeded()
-      console.log('result', result)
-      setResult(result)
+      const enableResult = await promptForEnableLocationIfNeeded();
+      console.log('enableResult', enableResult);
+      setResult(enableResult);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setResult(error.message)
+        setResult(error.message);
       }
     }
   }
@@ -21,7 +21,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Result: {result}</Text>
-      <Button title="Enable GPS" onPress={handleEnabledPressed}/>
+      <Button title="Enable GPS" onPress={handleEnabledPressed} />
     </View>
   );
 }
