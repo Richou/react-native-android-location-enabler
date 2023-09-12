@@ -29,3 +29,7 @@ export function promptForEnableLocationIfNeeded(
 ): Promise<AndroidLocationEnablerResult> {
   return AndroidLocationEnabler.promptForEnableLocationIfNeeded(options);
 }
+
+export function isLocationEnabled(): Promise<boolean> {
+  return AndroidLocationEnabler.isLocationEnabled();
+}

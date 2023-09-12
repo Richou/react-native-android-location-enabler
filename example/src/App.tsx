@@ -1,10 +1,11 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text, Button } from 'react-native';
-import { promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
+import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
+  const [enabled, setEnabled] = React.useState<boolean | undefined>()
 
   async function handleEnabledPressed() {
     try {
@@ -18,10 +19,18 @@ export default function App() {
     }
   }
 
+  async function handleCheckPressed() {
+    const checkEnabled = await isLocationEnabled();
+    console.log('checkEnabled', checkEnabled)
+    setEnabled(checkEnabled)
+  }
+
   return (
     <View style={styles.container}>
-      {result && <Text>Result: {result}</Text>}
+      <Button title="Check if GPS Enabled" onPress={handleCheckPressed}/>
+      {enabled !== undefined && <Text>Location Enabled : { enabled ? 'Yes' : 'No' }</Text>}
       <Button title="Enable GPS" onPress={handleEnabledPressed} />
+      {result && <Text>Result: {result}</Text>}
     </View>
   );
 }
@@ -30,6 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    gap: 10,
     justifyContent: 'center',
   },
   box: {
