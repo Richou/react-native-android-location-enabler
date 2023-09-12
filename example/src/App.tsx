@@ -1,11 +1,14 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
-import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
+import {
+  isLocationEnabled,
+  promptForEnableLocationIfNeeded,
+} from 'react-native-android-location-enabler';
 
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
-  const [enabled, setEnabled] = React.useState<boolean | undefined>()
+  const [enabled, setEnabled] = React.useState<boolean | undefined>();
 
   async function handleEnabledPressed() {
     if (Platform.OS === 'android') {
@@ -24,15 +27,17 @@ export default function App() {
   async function handleCheckPressed() {
     if (Platform.OS === 'android') {
       const checkEnabled = await isLocationEnabled();
-      console.log('checkEnabled', checkEnabled)
-      setEnabled(checkEnabled)
+      console.log('checkEnabled', checkEnabled);
+      setEnabled(checkEnabled);
     }
   }
 
   return (
     <View style={styles.container}>
-      <Button title="Check if GPS Enabled" onPress={handleCheckPressed}/>
-      {enabled !== undefined && <Text>Location Enabled : { enabled ? 'Yes' : 'No' }</Text>}
+      <Button title="Check if GPS Enabled" onPress={handleCheckPressed} />
+      {enabled !== undefined && (
+        <Text>Location Enabled : {enabled ? 'Yes' : 'No'}</Text>
+      )}
       <Button title="Enable GPS" onPress={handleEnabledPressed} />
       {result && <Text>Result: {result}</Text>}
     </View>
