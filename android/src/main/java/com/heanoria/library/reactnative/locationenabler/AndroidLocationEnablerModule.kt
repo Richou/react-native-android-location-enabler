@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.location.LocationManager
 import android.util.Log
+import androidx.core.location.LocationManagerCompat
 import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -38,6 +39,17 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
 
   override fun getName(): String {
     return NAME
+  }
+
+  @ReactMethod
+  fun isLocationEnabled(promise: Promise) {
+    if (currentActivity == null) return
+
+    val locationManager = this.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    val isLocationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
+
+    promise.resolve(isLocationEnabled)
   }
 
   @ReactMethod
