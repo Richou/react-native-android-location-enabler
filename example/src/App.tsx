@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 
 export default function App() {
@@ -8,21 +8,25 @@ export default function App() {
   const [enabled, setEnabled] = React.useState<boolean | undefined>()
 
   async function handleEnabledPressed() {
-    try {
-      const enableResult = await promptForEnableLocationIfNeeded();
-      console.log('enableResult', enableResult);
-      setResult(enableResult);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setResult(error.message);
+    if (Platform.OS === 'android') {
+      try {
+        const enableResult = await promptForEnableLocationIfNeeded();
+        console.log('enableResult', enableResult);
+        setResult(enableResult);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setResult(error.message);
+        }
       }
     }
   }
 
   async function handleCheckPressed() {
-    const checkEnabled = await isLocationEnabled();
-    console.log('checkEnabled', checkEnabled)
-    setEnabled(checkEnabled)
+    if (Platform.OS === 'android') {
+      const checkEnabled = await isLocationEnabled();
+      console.log('checkEnabled', checkEnabled)
+      setEnabled(checkEnabled)
+    }
   }
 
   return (
