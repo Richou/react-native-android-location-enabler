@@ -82,6 +82,7 @@ async function handleEnabledPressed() {
         //  - ERR01 : If the Settings change are unavailable
         //  - ERR02 : If the popup has failed to open
         //  - ERR03 : Internal error
+        //  - ERR04 : No Google Services Available for prompting
       }
     }
   }
