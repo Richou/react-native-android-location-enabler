@@ -16,6 +16,8 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -53,10 +55,22 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun hasPlayServices(promise: Promise) {
+    val state = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+    promise.resolve(state == ConnectionResult.SUCCESS);
+  }
+
+  @ReactMethod
   fun promptForEnableLocationIfNeeded(params: ReadableMap?, promise: Promise) {
     if (currentActivity == null) return
 
     this.promise = promise
+    val canPrompt = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    if (!canPrompt) {
+      this.promise?.reject(AndroidLocationEnablerException(ERR_NO_GOOGLE_SERVICES))
+      this.promise = null
+      return
+    }
 
     val interval = if (params?.hasKey(LOCATION_INTERVAL_DURATION_PARAMS_KEY) == true) params.getInt(LOCATION_INTERVAL_DURATION_PARAMS_KEY) else DEFAULT_INTERVAL_DURATION
     val waitForAccurate = if (params?.hasKey(LOCATION_WAIT_FOR_ACCURATE_PARAMS_KEY) == true) params.getBoolean(LOCATION_WAIT_FOR_ACCURATE_PARAMS_KEY) else DEFAULT_WAIT_FOR_ACCURATE
@@ -87,6 +101,7 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
     const val ERR_SETTINGS_CHANGE_UNAVAILABLE_CODE = "ERR01"
     const val ERR_FAILED_OPEN_DIALOG_CODE = "ERR02"
     const val ERR_INTERNAL_ERROR = "ERR03"
+    const val ERR_NO_GOOGLE_SERVICES = "ERR04"
   }
 
   override fun onComplete(task: Task<LocationSettingsResponse>) {

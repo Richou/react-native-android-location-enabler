@@ -33,3 +33,7 @@ export function promptForEnableLocationIfNeeded(
 export function isLocationEnabled(): Promise<boolean> {
   return AndroidLocationEnabler.isLocationEnabled();
 }
+
+export function hasPlayServices(): Promise<boolean> {
+  return AndroidLocationEnabler.hasPlayServices();
+}
