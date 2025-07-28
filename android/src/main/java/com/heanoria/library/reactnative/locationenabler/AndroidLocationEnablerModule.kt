@@ -126,7 +126,7 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
     return false
   }
 
-  override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, intent: Intent?) {
+  override fun onActivityResult(activity: Activity, requestCode: Int, resultCode: Int, intent: Intent?) {
     Log.i(TAG, "On activityResult : $requestCode")
     if (requestCode == REQUEST_CHECK_SETTINGS) {
       if (resultCode == RESULT_OK || isLocationProviderEnabled()) {
@@ -139,7 +139,7 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
     }
   }
 
-  override fun onNewIntent(intent: Intent?) {
+  override fun onNewIntent(intent: Intent) {
     // Nothing to do
   }
 }
