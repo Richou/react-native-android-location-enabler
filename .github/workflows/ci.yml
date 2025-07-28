@@ -101,6 +101,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build example for Android
+      - name: Build Simple for Android
         run: |
           yarn turbo run build:simple:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
