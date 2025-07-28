@@ -8,11 +8,11 @@
         "!android/build",
         "src/*.ts",
         "src/*.tsx",
-        "example/package.json",
-        "example/android",
-        "!example/android/.gradle",
-        "!example/android/build",
-        "!example/android/app/build"
+        "samples/simple/package.json",
+        "samples/simple/android",
+        "!samples/simple/android/.gradle",
+        "!samples/simple/android/build",
+        "!samples/simple/android/app/build"
       ],
       "outputs": []
     }
