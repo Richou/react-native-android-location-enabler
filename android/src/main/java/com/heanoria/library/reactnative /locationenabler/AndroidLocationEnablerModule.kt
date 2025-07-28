@@ -1,3 +1,4 @@
+// package com.androidlocationenabler
 package com.heanoria.library.reactnative.locationenabler
 
 import android.app.Activity
@@ -9,11 +10,10 @@ import android.location.LocationManager
 import android.util.Log
 import androidx.core.location.LocationManagerCompat
 import com.facebook.react.bridge.ActivityEventListener
-import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.module.annotations.ReactModule
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -25,24 +25,19 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 
-
+@ReactModule(name = AndroidLocationEnablerModule.NAME)
 class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext), ActivityEventListener, OnCompleteListener<LocationSettingsResponse> {
+  NativeAndroidLocationEnablerSpec(reactContext), ActivityEventListener, OnCompleteListener<LocationSettingsResponse> {
 
   private val context: ReactApplicationContext
   private var promise: Promise? = null
 
   init {
-      context = reactContext
-      context.addActivityEventListener(this)
+    context = reactContext
+    context.addActivityEventListener(this)
   }
 
-  override fun getName(): String {
-    return NAME
-  }
-
-  @ReactMethod
-  fun isLocationEnabled(promise: Promise) {
+  override fun isLocationEnabled(promise: Promise) {
     if (currentActivity == null) return
 
     val locationManager = this.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -52,8 +47,11 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
     promise.resolve(isLocationEnabled)
   }
 
-  @ReactMethod
-  fun promptForEnableLocationIfNeeded(params: ReadableMap?, promise: Promise) {
+  override fun getName(): String {
+    return NAME
+  }
+
+  override fun promptForEnableLocationIfNeeded(params: ReadableMap?, promise: Promise) {
     if (currentActivity == null) return
 
     this.promise = promise
@@ -71,8 +69,6 @@ class AndroidLocationEnablerModule(reactContext: ReactApplicationContext) :
     LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, timeInterval).apply {
       setWaitForAccurateLocation(waitForAccurate)
     }.build()
-
-
 
   companion object {
     const val NAME = "AndroidLocationEnabler"

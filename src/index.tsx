@@ -1,21 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
-
-const LINKING_ERROR =
-  `The package 'react-native-android-location-enabler' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-const AndroidLocationEnabler = NativeModules.AndroidLocationEnabler
-  ? NativeModules.AndroidLocationEnabler
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+import AndroidLocationEnabler from './NativeAndroidLocationEnabler';
 
 export type AndroidLocationEnablerResult = 'enabled' | 'already-enabled';
 

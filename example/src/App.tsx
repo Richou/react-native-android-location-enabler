@@ -1,26 +1,21 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import * as React from 'react';
 
-import { StyleSheet, View, StatusBar, useColorScheme, Text, Button, Platform } from 'react-native';
+import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 import {
   isLocationEnabled,
   promptForEnableLocationIfNeeded,
 } from 'react-native-android-location-enabler';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
   const [enabled, setEnabled] = React.useState<boolean | undefined>();
 
   async function handleEnabledPressed() {
     if (Platform.OS === 'android') {
       try {
-        const enableResult = await promptForEnableLocationIfNeeded();
+        const enableResult = await promptForEnableLocationIfNeeded({
+          interval: 15000,
+        });
         console.log('enableResult', enableResult);
         setResult(enableResult);
       } catch (error: unknown) {
@@ -38,9 +33,9 @@ function App() {
       setEnabled(checkEnabled);
     }
   }
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Button title="Check if GPS Enabled" onPress={handleCheckPressed} />
       {enabled !== undefined && (
         <Text>Location Enabled : {enabled ? 'Yes' : 'No'}</Text>
@@ -54,7 +49,13 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    gap: 10,
+    justifyContent: 'center',
+  },
+  box: {
+    width: 60,
+    height: 60,
+    marginVertical: 20,
   },
 });
-
-export default App;
