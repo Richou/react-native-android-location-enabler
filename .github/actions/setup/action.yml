@@ -23,6 +23,6 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        yarn --cwd samples/simple --frozen-lockfile
+        yarn --cwd example --frozen-lockfile
         yarn install --frozen-lockfile
       shell: bash

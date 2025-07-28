@@ -28,10 +28,10 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepack": "bob build",
     "release": "release-it",
-    "samples:simple": "yarn --cwd samples/simple",
-    "build:simple:android": "cd samples/simple/android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
-    "bootstrap": "yarn samples:simple && yarn install",
-    "clean": "del-cli android/build samples/simple/android/build samples/simple/android/app/build"
+    "example": "yarn --cwd example",
+    "build:simple:android": "cd example/android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
+    "bootstrap": "yarn example && yarn install",
+    "clean": "del-cli android/build example/android/build example/android/app/build"
   },
   "keywords": [
     "react-native",
